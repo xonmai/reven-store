@@ -17,6 +17,11 @@ public class CommonExceptionHandler {
         return respondException(ex, SystemErrorCode.ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler({InvalidParameterRequest.class})
+    private ResponseEntity<ErrorMessage> handleInvalidRequest(Throwable ex) {
+        return respondException(ex, SystemErrorCode.INVALID_PARAM_REQUEST, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler({Exception.class})
     private ResponseEntity<ErrorMessage> handleException(Throwable ex) {
         return respondException(ex, SystemErrorCode.UNKNOWN_SYSTEM_EXCEPTION, HttpStatus.INTERNAL_SERVER_ERROR);

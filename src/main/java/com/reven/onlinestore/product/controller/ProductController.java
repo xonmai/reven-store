@@ -2,16 +2,16 @@ package com.reven.onlinestore.product.controller;
 
 import com.reven.onlinestore.common.annotation.ActivityTrace;
 import com.reven.onlinestore.common.exception.EntityNotFoundException;
+import com.reven.onlinestore.product.model.FilterProductRequest;
 import com.reven.onlinestore.product.model.Product;
 import com.reven.onlinestore.product.service.ProductService;
+import jdk.nashorn.internal.objects.annotations.Getter;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -29,5 +29,13 @@ public class ProductController {
         Optional<Product> result = productService.getById(id);
         return result.orElseThrow(
                 () -> new EntityNotFoundException(String.format("Product '%s' not found", id)));
+    }
+
+    @PostMapping("/filter")
+    @ActivityTrace(action = "filterProduct")
+    public List<Product> filterProduct(@RequestBody FilterProductRequest payload) {
+        log.info("ProductController.filterProduct('{}', '{}', '{}')",
+                payload.getName(), payload.getBrand(), payload.getColor());
+        return productService.filterProduct(payload);
     }
 }

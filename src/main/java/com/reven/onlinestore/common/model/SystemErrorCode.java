@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum SystemErrorCode {
 
+    INVALID_PARAM_REQUEST("INVALID_PARAM_REQUEST"),
     ENTITY_NOT_FOUND("ENTITY_NOT_FOUND"),
     UNKNOWN_SYSTEM_EXCEPTION("SYSTEM_EXCEPTION");
 
