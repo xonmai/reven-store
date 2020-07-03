@@ -1,5 +1,6 @@
 package com.reven.onlinestore.product.controller;
 
+import com.reven.onlinestore.common.annotation.ActivityTrace;
 import com.reven.onlinestore.common.exception.EntityNotFoundException;
 import com.reven.onlinestore.product.model.Product;
 import com.reven.onlinestore.product.service.ProductService;
@@ -13,15 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@Slf4j
 @RestController
 @RequestMapping("/api/product")
-@Slf4j
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
 
     @GetMapping("/{id}")
+    @ActivityTrace(action = "findProduct")
     public Product getProduct(@PathVariable("id") Long id) {
         log.info("ProductController.getProduct({})", id);
         Optional<Product> result = productService.getById(id);
