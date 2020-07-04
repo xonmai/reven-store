@@ -23,7 +23,7 @@ public class OrderCreateTask implements OrderTask {
 
     @Override
     public void execute(Order order) {
-        order.setOrderStatus(OrderStatus.ORDER_CREATED)
+        order.setOrderStatus(OrderStatus.ORDER_PROCESSING)
                 .setCreatedDate(Instant.now().toEpochMilli())
                 .setUpdatedDate(Instant.now().toEpochMilli());
 
