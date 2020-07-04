@@ -1,6 +1,6 @@
 package com.reven.onlinestore;
 
-import com.reven.onlinestore.product.model.Product;
+import com.reven.onlinestore.common.model.Product;
 import com.reven.onlinestore.product.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;

@@ -1,4 +1,4 @@
-package com.reven.onlinestore.product.model;
+package com.reven.onlinestore.common.model;
 
 import lombok.Data;
 import lombok.Getter;
@@ -35,6 +35,6 @@ public class Product {
     private Double price;
 
     @Column
-    private Long updatedTime;
+    private Long updatedDate;
 
 }

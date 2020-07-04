@@ -1,7 +1,7 @@
 package com.reven.onlinestore.product.repository;
 
 import com.reven.onlinestore.product.model.FilterProductRequest;
-import com.reven.onlinestore.product.model.Product;
+import com.reven.onlinestore.common.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
