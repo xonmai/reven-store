@@ -3,6 +3,7 @@ package com.reven.onlinestore.product.repository;
 import com.reven.onlinestore.product.model.FilterProductRequest;
 import com.reven.onlinestore.common.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -16,4 +17,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "AND (:#{#param.color} = '' OR p.color like %:#{#param.color}%)"
     )
     List<Product> filterByCriteria(@Param("param") FilterProductRequest param);
+
+    @Modifying
+    @Query("UPDATE Product p SET " +
+            "p.quantity = p.quantity - :#{#param.quantity}, " +
+            "p.updatedDate = :#{#param.updatedDate} " +
+            "WHERE p.id = :#{#param.id}")
+    void reserveStock(@Param("param") Product param);
 }
