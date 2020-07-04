@@ -1,11 +1,9 @@
 package com.reven.onlinestore.product.model;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import org.springframework.util.StringUtils;
 
-@Builder
-@Getter
+@Data
 public class FilterProductRequest {
 
     private String color;

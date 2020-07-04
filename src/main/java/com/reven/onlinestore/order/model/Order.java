@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 
 @Data
-@Entity
+@Entity(name = "ORDER_BASKET")
 @Accessors(chain = true)
 public class Order {
 
@@ -18,6 +18,7 @@ public class Order {
     private String orderDetail;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
     @Column

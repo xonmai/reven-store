@@ -30,7 +30,7 @@ public class OnlineStoreApplication {
                     .setDescription("Latest apple design")
                     .setPrice(1500.0)
                     .setQuantity(10L)
-                    .setUpdatedTime(Instant.now().toEpochMilli());
+                    .setUpdatedDate(Instant.now().toEpochMilli());
 
             productRepository.save(iphone);
         };
