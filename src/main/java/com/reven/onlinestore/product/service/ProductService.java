@@ -1,5 +1,6 @@
 package com.reven.onlinestore.product.service;
 
+import com.reven.onlinestore.common.exception.EntityNotFoundException;
 import com.reven.onlinestore.common.exception.InvalidParameterRequest;
 import com.reven.onlinestore.common.model.Product;
 import com.reven.onlinestore.product.model.FilterProductRequest;
@@ -48,7 +49,13 @@ public class ProductService {
                 boolean lockAcquired = lock.tryLock(1, TimeUnit.SECONDS);
                 if(lockAcquired) {
                     p.setUpdatedDate(Instant.now().toEpochMilli());
-                    productRepository.reserveStock(p);
+                    Product before = productRepository.findById(p.getId()).orElseThrow(
+                            () -> new EntityNotFoundException("Product not found for id " + p.getId())
+                    );
+                    before.setQuantity(before.getQuantity() - p.getQuantity());
+                    before.setUpdatedDate(Instant.now().toEpochMilli());
+                    productRepository.save(before);
+                    p.setPrice(before.getPrice()); // Correct price from DB
                 }
             } catch (InterruptedException iex) {
                 log.error("Concurrent handling error", iex);

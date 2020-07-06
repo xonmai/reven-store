@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reven.onlinestore.common.exception.EntityNotFoundException;
 import com.reven.onlinestore.order.model.Order;
 import com.reven.onlinestore.order.model.OrderCreateRequest;
-import com.reven.onlinestore.order.model.OrderStatus;
 import com.reven.onlinestore.order.model.OrderTask;
 import com.reven.onlinestore.order.service.OrderCreateTask;
 import com.reven.onlinestore.order.service.OrderProcessor;
@@ -14,9 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
 import java.util.LinkedList;
-import java.util.Optional;
 
 @Slf4j
 @RestController

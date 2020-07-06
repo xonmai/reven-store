@@ -16,7 +16,7 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.function.DoubleToLongFunction;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 @Component
@@ -36,11 +36,14 @@ public class ProductEventListener {
             List<Product> products = mapper.readValue(message.getOrderDetail(), new TypeReference<List<Product>>(){});
             productService.reserveProducts(products);
             String orderDetail = mapper.writeValueAsString(products);
-            Double totalPrice = products.stream().map(Product::getPrice).reduce(0D, Double::sum);
+            AtomicReference<Double> totalPrice = new AtomicReference<>(0d);
+            products.stream().forEach(p -> {
+                totalPrice.updateAndGet(v -> v + p.getPrice() * p.getQuantity());
+            });
             OrderUpdateMessage updateMessage = OrderUpdateMessage.builder()
                     .orderId(message.getOrderId())
                     .orderDetail(orderDetail)
-                    .totalPrice(totalPrice)
+                    .totalPrice(totalPrice.get())
                     .status(OrderStatus.ORDER_CREATED)
                     .build();
             jmsTemplate.convertAndSend(OrderEventTopic.ORDER_UPDATE_QUEUE, updateMessage);
