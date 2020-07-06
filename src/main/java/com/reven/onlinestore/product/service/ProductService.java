@@ -39,7 +39,7 @@ public class ProductService {
 
     @Transactional
     @SneakyThrows
-    public void reserveProducts(List<Product> products) {
+    public List<Product> reserveProducts(List<Product> products) {
         log.info("Reserve stock for products: {}", products);
         products.stream().forEach(p -> {
             //Thread-safe
@@ -59,5 +59,7 @@ public class ProductService {
                 lock.unlock();
             }
         });
+
+        return products;
     }
 }

@@ -16,27 +16,17 @@ import java.time.Instant;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OrderCreateTask implements OrderTask {
+public class OrderUpdateTask implements OrderTask {
 
     private final OrderRepository orderRepository;
 
-    private final JmsTemplate jmsTemplate;
-
     @Override
     public void execute(Order order) {
-        order.setOrderStatus(OrderStatus.ORDER_PROCESSING)
-                .setCreatedDate(Instant.now().toEpochMilli())
-                .setUpdatedDate(Instant.now().toEpochMilli());
-
         try {
+            order.setUpdatedDate(Instant.now().toEpochMilli());
             orderRepository.save(order);
-            OrderCreateMessage message = OrderCreateMessage.builder()
-                    .orderId(order.getId())
-                    .orderDetail(order.getOrderDetail())
-                    .build();
-            jmsTemplate.convertAndSend(OrderEventTopic.ORDER_CREATED_QUEUE, message);
         } catch (Exception ex) {
-            log.error("Exception on OrderCreateTask", ex);
+            log.error("Exception on OrderUpdateTask", ex);
         }
     }
 }
