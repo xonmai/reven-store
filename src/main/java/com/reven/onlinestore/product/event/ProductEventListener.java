@@ -36,14 +36,13 @@ public class ProductEventListener {
             List<Product> products = mapper.readValue(message.getOrderDetail(), new TypeReference<List<Product>>(){});
             productService.reserveProducts(products);
             String orderDetail = mapper.writeValueAsString(products);
-            AtomicReference<Double> totalPrice = new AtomicReference<>(0d);
-            products.stream().forEach(p -> {
-                totalPrice.updateAndGet(v -> v + p.getPrice() * p.getQuantity());
-            });
+            Double totalPrice = products.stream()
+                    .map(p -> p.getQuantity() * p.getPrice())
+                    .reduce(0d, Double::sum);
             OrderUpdateMessage updateMessage = OrderUpdateMessage.builder()
                     .orderId(message.getOrderId())
                     .orderDetail(orderDetail)
-                    .totalPrice(totalPrice.get())
+                    .totalPrice(totalPrice)
                     .status(OrderStatus.ORDER_CREATED)
                     .build();
             jmsTemplate.convertAndSend(OrderEventTopic.ORDER_UPDATE_QUEUE, updateMessage);

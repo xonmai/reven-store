@@ -37,12 +37,13 @@ curl -X POST \
         "description": "Latest apple design",
         "brand": "Apple",
         "color": "Black",
-        "quantity": 1,
-        "price": 1500.0,
-        "updatedTime": 1593752784987
-    }],
-    "totalPrice": 1500.0
+        "quantity": 1
+    }]
 }'
+
+3.4 GET created Order
+curl -X GET \
+  http://localhost:8080/api/order/2
 
 4. Application structure
 4.1 package com.reven.onlinestore.product
