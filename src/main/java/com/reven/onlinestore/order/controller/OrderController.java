@@ -21,19 +21,18 @@ import java.util.LinkedList;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private final OrderProcessor orderProcessor = new OrderProcessor();
+    private final OrderProcessor orderProcessor;
 
     private final OrderCreateTask orderCreateTask;
 
     @PostMapping("/create")
     public Order createOrder(@RequestBody OrderCreateRequest request) throws JsonProcessingException {
-        log.info("OrderController.createOrder('{}'): {}", request.getId(), request.getOrderDetail());
+        log.info("OrderController.createOrder('{}'): {}", request.getOrderId(), request.getOrderDetail());
         ObjectMapper mapper = new ObjectMapper();
         String orderDetail = mapper.writeValueAsString(request.getOrderDetail());
         Order created = new Order()
-                .setId(request.getId())
-                .setOrderDetail(orderDetail)
-                .setTotalPrice(request.getTotalPrice());
+                .setId(request.getOrderId())
+                .setOrderDetail(orderDetail);
 
         LinkedList<OrderTask> tasks = new LinkedList<>();
         tasks.add(orderCreateTask);

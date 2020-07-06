@@ -1,5 +1,6 @@
 package com.reven.onlinestore.order.service;
 
+import com.reven.onlinestore.common.message.OrderCreateMessage;
 import com.reven.onlinestore.common.model.JmsTopic;
 import com.reven.onlinestore.order.model.Order;
 import com.reven.onlinestore.order.model.OrderStatus;
@@ -29,7 +30,11 @@ public class OrderCreateTask implements OrderTask {
 
         try {
             orderRepository.save(order);
-            jmsTemplate.convertAndSend(JmsTopic.ORDER_CREATED_QUEUE, order.getOrderDetail());
+            OrderCreateMessage message = OrderCreateMessage.builder()
+                    .orderId(order.getId())
+                    .orderDetails(order.getOrderDetail())
+                    .build();
+            jmsTemplate.convertAndSend(JmsTopic.ORDER_CREATED_QUEUE, message);
         } catch (Exception ex) {
             log.error("Exception on OrderCreateTask", ex);
         }

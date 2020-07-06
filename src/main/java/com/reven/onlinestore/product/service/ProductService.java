@@ -38,27 +38,26 @@ public class ProductService {
     }
 
     @Transactional
+    @SneakyThrows
     public void reserveProducts(List<Product> products) {
         log.info("Reserve stock for products: {}", products);
-        try {
-            products.stream().forEach(p -> {
-                Lock lock = lockRegistry.obtain(p.getId());
-                try {
-                    boolean lockAcquired = lock.tryLock(1, TimeUnit.SECONDS);
-                    if(lockAcquired) {
-                        p.setUpdatedDate(Instant.now().toEpochMilli());
-                        productRepository.reserveStock(p);
-                    }
-                } catch (InterruptedException iex) {
-                    log.error("Concurrent handling error", iex);
-                } finally {
-                    lock.unlock();
+        products.stream().forEach(p -> {
+            //Thread-safe
+            Lock lock = lockRegistry.obtain(String.valueOf(p.getId()));
+            try {
+                boolean lockAcquired = lock.tryLock(1, TimeUnit.SECONDS);
+                if(lockAcquired) {
+                    p.setUpdatedDate(Instant.now().toEpochMilli());
+                    productRepository.reserveStock(p);
                 }
-
-            });
-        } catch (Exception ex) {
-            log.error("Exception on ProductService.reserveProducts", ex);
-            throw ex;
-        }
+            } catch (InterruptedException iex) {
+                log.error("Concurrent handling error", iex);
+            } catch (Exception ex) {
+                log.error("Exception on ProductService.reserveProducts id: {}", p.getId(), ex);
+                throw ex;
+            } finally {
+                lock.unlock();
+            }
+        });
     }
 }

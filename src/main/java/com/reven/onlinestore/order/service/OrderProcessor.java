@@ -2,14 +2,14 @@ package com.reven.onlinestore.order.service;
 
 import com.reven.onlinestore.order.model.Order;
 import com.reven.onlinestore.order.model.OrderTask;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 
-@Getter
 @Setter
+@Service
 @NoArgsConstructor
 public class OrderProcessor {
 

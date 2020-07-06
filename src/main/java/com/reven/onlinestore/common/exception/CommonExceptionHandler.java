@@ -1,6 +1,6 @@
 package com.reven.onlinestore.common.exception;
 
-import com.reven.onlinestore.common.model.ErrorMessage;
+import com.reven.onlinestore.common.model.ErrorResponse;
 import com.reven.onlinestore.common.model.SystemErrorCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,24 +13,24 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class CommonExceptionHandler {
 
     @ExceptionHandler({EntityNotFoundException.class})
-    private ResponseEntity<ErrorMessage> handleEntityNotFound(Throwable ex) {
+    private ResponseEntity<ErrorResponse> handleEntityNotFound(Throwable ex) {
         return respondException(ex, SystemErrorCode.ENTITY_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler({InvalidParameterRequest.class})
-    private ResponseEntity<ErrorMessage> handleInvalidRequest(Throwable ex) {
+    private ResponseEntity<ErrorResponse> handleInvalidRequest(Throwable ex) {
         return respondException(ex, SystemErrorCode.INVALID_PARAM_REQUEST, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({Exception.class})
-    private ResponseEntity<ErrorMessage> handleException(Throwable ex) {
+    private ResponseEntity<ErrorResponse> handleException(Throwable ex) {
         return respondException(ex, SystemErrorCode.UNKNOWN_SYSTEM_EXCEPTION, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    private ResponseEntity<ErrorMessage> respondException(Throwable ex, SystemErrorCode sysCode, HttpStatus status) {
+    private ResponseEntity<ErrorResponse> respondException(Throwable ex, SystemErrorCode sysCode, HttpStatus status) {
         log.error("Exception in system:", ex);
         return new ResponseEntity(
-                new ErrorMessage(
+                new ErrorResponse(
                         sysCode.getName(),
                         ex.getMessage()
                 ),

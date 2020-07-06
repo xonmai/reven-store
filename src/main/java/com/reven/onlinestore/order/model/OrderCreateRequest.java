@@ -1,19 +1,22 @@
 package com.reven.onlinestore.order.model;
 
-
-import com.reven.onlinestore.common.model.Product;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.experimental.Accessors;
 
 import java.util.List;
 
 @Data
-@Accessors(chain = true)
+@NoArgsConstructor
 public class OrderCreateRequest {
 
-    private Long id;
-    @NonNull private List<Product> orderDetail;
-    @NonNull private Double totalPrice;
+    private Long orderId;
+    @NonNull private List<OrderDetail> orderDetail;
+
+    @Data
+    private static class OrderDetail {
+        private Long id;
+        private Long quantity;
+    }
 
 }
