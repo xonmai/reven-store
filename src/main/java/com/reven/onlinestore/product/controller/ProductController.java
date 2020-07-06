@@ -36,4 +36,5 @@ public class ProductController {
                 payload.getName(), payload.getBrand(), payload.getColor());
         return productService.filterProduct(payload);
     }
+
 }
