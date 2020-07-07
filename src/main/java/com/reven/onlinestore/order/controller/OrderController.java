@@ -37,11 +37,12 @@ public class OrderController {
                 .setOrderDetail(orderDetail);
 
         LinkedList<OrderTask> tasks = new LinkedList<>();
+        orderCreateTask.setOrder(created);
         tasks.add(orderCreateTask);
 
-        orderProcessor.setOrder(created);
         orderProcessor.setTasks(tasks);
-        return orderProcessor.process();
+        orderProcessor.process();
+        return created;
     }
 
     @GetMapping("/{id}")

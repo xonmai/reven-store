@@ -7,6 +7,7 @@ import com.reven.onlinestore.order.model.OrderStatus;
 import com.reven.onlinestore.order.model.OrderTask;
 import com.reven.onlinestore.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,15 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class OrderCreateTask implements OrderTask {
 
+    @Setter
+    private Order order;
+
     private final OrderRepository orderRepository;
 
     private final JmsTemplate jmsTemplate;
 
     @Override
-    public void execute(Order order) {
+    public void execute() {
         order.setOrderStatus(OrderStatus.ORDER_PROCESSING)
                 .setCreatedDate(Instant.now().toEpochMilli())
                 .setUpdatedDate(Instant.now().toEpochMilli());

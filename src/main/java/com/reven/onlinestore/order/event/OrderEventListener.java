@@ -30,7 +30,8 @@ public class OrderEventListener {
             order.setOrderDetail(message.getOrderDetail())
                     .setOrderStatus(message.getStatus())
                     .setTotalPrice(message.getTotalPrice());
-            updateTask.execute(order);
+            updateTask.setOrder(order);
+            updateTask.execute();
         } catch (Exception ex) {
             log.error("Exception on orderUpdatedEvent", ex);
         }
