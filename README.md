@@ -46,6 +46,7 @@ curl -X GET \
   http://localhost:8080/api/order/2
 
 4. Application structure
+
 4.1 package com.reven.onlinestore.product
 	Product micro-service: Everything relates to Product management will be implemented in this folder. In reality, I will be deployed in a separated container.
 
