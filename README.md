@@ -56,7 +56,7 @@ curl -X GET \
 4.3 package com.reven.onlinestore.common
 	Common components: Everything common or sharable micro-services can be implemented here. Will be deployed as a dependency and inject to other modules.
 
-4.4 Other libraries used:
+4.4 Other libraries used
 	- Lombok: To reduce a number of boilerplate code in Java
 	- H2 Database: Embedded database, quick to install and implement this project.
 	- Active-mq: Messaging queue server for communicating between micro-services
